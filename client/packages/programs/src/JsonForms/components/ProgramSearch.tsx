@@ -16,6 +16,7 @@ import {
 import { ProgramFragment, useProgramList } from '../../api';
 import { useJsonForms, withJsonFormsControlProps } from '@jsonforms/react';
 import { z } from 'zod';
+import { formatErrors } from '../common/formatErrors';
 
 export const programSearchTester = rankWith(10, uiTypeIs('ProgramSearch'));
 
@@ -39,7 +40,7 @@ const UIComponent = (props: ControlProps) => {
     props.uischema.options
   );
 
-  const { handleChange, label, path } = props;
+  const { handleChange, label, path, errors } = props;
   const { core } = useJsonForms();
 
   const { data, isLoading } = useProgramList(
@@ -82,6 +83,7 @@ const UIComponent = (props: ControlProps) => {
   };
 
   const programs = data?.nodes ?? [];
+  const error = errors;
 
   const programOptions =
     programs.length > 1 && props.uischema.options?.['allProgramsOption']
@@ -118,6 +120,12 @@ const UIComponent = (props: ControlProps) => {
           value={program ? { label: program.name ?? '', ...program } : null}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           clearable={props.uischema.options?.['clearable'] ?? false}
+          required={props.required}
+          inputProps={{
+            error: !!error,
+            helperText: formatErrors(error),
+          }}
+          disabled={!props.enabled}
         />
       }
     />

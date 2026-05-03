@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Autocomplete } from '@openmsupply-client/common';
+import { Autocomplete, BasicTextInputProps } from '@openmsupply-client/common';
 import { DocumentRegistryFragment } from '../api/operations.generated';
 import { useDocumentRegistry } from '../api';
 
@@ -8,6 +8,9 @@ type PatientProgramSearchInputProps = {
   onChange: (newProgram: DocumentRegistryFragment) => void;
   setProgram: (newProgram: DocumentRegistryFragment) => void;
   programId: string | null;
+  required?: boolean;
+  inputProps?: BasicTextInputProps;
+  disabled?: boolean;
 };
 
 export const PatientProgramSearchInput = ({
@@ -15,6 +18,9 @@ export const PatientProgramSearchInput = ({
   onChange,
   setProgram,
   programId,
+  required,
+  inputProps,
+  disabled,
 }: PatientProgramSearchInputProps) => {
   const { data, isLoading } = useDocumentRegistry.get.programRegistries();
 
@@ -44,6 +50,9 @@ export const PatientProgramSearchInput = ({
       value={value ? { label: value.name ?? '', ...value } : null}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       clearable={false}
+      required={required}
+      inputProps={inputProps}
+      disabled={disabled}
     />
   );
 };

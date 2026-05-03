@@ -9,6 +9,7 @@ import {
 import { DefaultFormRowSx, FORM_GAP, FORM_LABEL_WIDTH } from '../common';
 import { PatientProgramSearchInput } from '../../Components';
 import { DocumentRegistryFragment } from '../../api';
+import { formatErrors } from '../common/formatErrors';
 
 export const patientProgramSearchTester = rankWith(
   10,
@@ -16,7 +17,7 @@ export const patientProgramSearchTester = rankWith(
 );
 
 const UIComponent = (props: ControlProps) => {
-  const { handleChange, label, path } = props;
+  const { handleChange, label, path, errors } = props;
   const { core } = useJsonForms();
 
   const [program, setProgram] = React.useState<DocumentRegistryFragment | null>(
@@ -42,6 +43,12 @@ const UIComponent = (props: ControlProps) => {
             value={program}
             programId={programId}
             setProgram={setProgram}
+            required={props.required}
+            inputProps={{
+              error: !!errors,
+              helperText: formatErrors(errors),
+            }}
+            disabled={!props.enabled}
           />
         </Box>
       }
