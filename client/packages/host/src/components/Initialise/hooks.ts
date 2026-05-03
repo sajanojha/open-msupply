@@ -36,7 +36,8 @@ interface InitialiseForm {
   // set to settings value from api if isInitialising
   url: string;
   // Used to enable polling of syncStatus and initialisationStatus
-  // false by default and toggled to STATUS_POLLING_INTERVAL when isInitialising
+  // polling starts immediately while the initialise page is shown
+  // and is toggled off once the status is known and not initialising
   refetchInterval: number | false;
 }
 
@@ -48,7 +49,7 @@ const useInitialiseFormState = () => {
     password: '',
     username: '',
     url: 'https://',
-    refetchInterval: false,
+    refetchInterval: STATUS_POLLING_INTERVAL,
   });
 
   return {
